@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anwar Khan | Portfolio Management & Transformation Leader</title>
+    <meta
+      name="description"
+      content="Professional portfolio for Anwar Khan, a portfolio management and transformation leader delivering AI/ML, autonomous agents, agent farms, data platforms, and regulatory technology in financial services."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=github-activity-removed" />
+  </head>
+  <body>
+    <canvas id="signal-canvas" aria-hidden="true"></canvas>
+    <canvas id="swarm-canvas" aria-hidden="true"></canvas>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="Anwar home" data-tooltip="Return to the opening screen">
+        <span class="brand-mark">A</span>
+        <span>Anwar Khan</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#work" data-tooltip="AI and transformation delivery examples">Work</a>
+        <a href="#experience" data-tooltip="Career timeline and roles">Experience</a>
+        <a href="#capabilities" data-tooltip="Interactive skills map">Expertise</a>
+        <a href="#about" data-tooltip="Professional profile">About</a>
+        <a href="#contact" data-tooltip="Ways to connect">Contact</a>
+      </nav>
+      <div class="header-tools">
+        <a class="social-button" href="https://www.linkedin.com/in/anwar-j-khan/" target="_blank" rel="noreferrer" aria-label="Open Anwar Khan on LinkedIn" data-tooltip="Open LinkedIn profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5.1 8.8h3.6v10.9H5.1V8.8Zm1.8-5.3a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2Zm4.1 5.3h3.4v1.5h.1c.5-.9 1.7-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v5.8h-3.6v-5.1c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7v5.2H11V8.8Z" />
+          </svg>
+        </a>
+        <a class="social-button" href="https://github.com/anwarjkhan" target="_blank" rel="noreferrer" aria-label="Open Anwar Khan on GitHub" data-tooltip="Open GitHub profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8a9.2 9.2 0 0 0-2.9 17.9c.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.2-3.5-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 0 1.6 1.1 1.6 1.1.9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.7-1.4-2.3-.3-4.7-1.2-4.7-5.1 0-1.1.4-2.1 1.1-2.8-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1a9.9 9.9 0 0 1 5.2 0c2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.7 1.1 1.7 1.1 2.8 0 4-2.4 4.8-4.7 5.1.4.3.8 1 .8 2v3c0 .3.2.6.7.5A9.2 9.2 0 0 0 12 2.8Z" />
+          </svg>
+        </a>
+        <button class="audio-toggle" type="button" aria-label="Turn ambient sound off" aria-pressed="true" data-tooltip="Sound on" data-audio-toggle>
+          <span class="audio-icon" aria-hidden="true"></span>
+        </button>
+        <button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false" data-tooltip="Switch to light mode" data-theme-toggle>
+          <span class="theme-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro-blank section" id="top" aria-label="Dynamic vector opening">
+        <button class="intro-explore" type="button" data-tooltip="Click or scroll to enter" data-enter-site>
+          <span>Activating</span><span class="activating-dots" aria-hidden="true"></span>
+        </button>
+      </section>
+
+      <section class="hero section" id="home">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">AI portfolio management & transformation</p>
+          <h1>Leading AI-enabled change across risk, finance, and technology.</h1>
+          <p class="hero-text">
+            I’m Anwar Khan, a London-based portfolio and programme leader delivering
+            complex analytics, AI/ML, autonomous agent, agent farm, cloud, and
+            regulatory technology initiatives across global financial services.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#work" data-tooltip="Jump to selected work">
+              <span>View Work</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 17 17 7M8 7h9v9" />
+              </svg>
+            </a>
+            <a class="button ghost" href="#contact" data-tooltip="Open contact options">Start a Conversation</a>
+          </div>
+        </div>
+
+        <div class="hero-panel reveal" aria-label="Professional snapshot">
+          <div class="panel-topline">
+            <span>London | Financial services transformation</span>
+            <span class="status-dot"></span>
+          </div>
+          <div class="metric-grid" id="hero-metrics"></div>
+          <div class="signal-window">
+            <div class="signal-bars" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <p>
+              AI use cases, governance, delivery metrics, stakeholder alignment,
+              and execution discipline across large, matrixed technology organisations.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="focus-fall" aria-label="Portfolio focus areas">
+        <div class="falling-terms">
+          <span style="--x: 2%; --delay: -2s; --duration: 18s; --drift: 22px; --r: -7deg;">Product thinking</span>
+          <span style="--x: 46%; --delay: -11s; --duration: 24s; --drift: -18px; --r: 5deg;">Portfolio governance</span>
+          <span style="--x: 18%; --delay: -7s; --duration: 21s; --drift: 28px; --r: 3deg;">Autonomous agents</span>
+          <span style="--x: 68%; --delay: -15s; --duration: 19s; --drift: -26px; --r: -5deg;">Agent farms</span>
+          <span style="--x: 34%; --delay: -4s; --duration: 26s; --drift: 14px; --r: 7deg;">AI-assisted workflows</span>
+          <span style="--x: 76%; --delay: -9s; --duration: 23s; --drift: -20px; --r: 2deg;">RAG copilots</span>
+          <span style="--x: 8%; --delay: -17s; --duration: 22s; --drift: 30px; --r: -3deg;">Risk technology</span>
+          <span style="--x: 56%; --delay: -5s; --duration: 20s; --drift: -16px; --r: 4deg;">Cloud migration</span>
+          <span style="--x: 26%; --delay: -13s; --duration: 25s; --drift: 24px; --r: -6deg;">Executive reporting</span>
+          <span style="--x: 82%; --delay: -1s; --duration: 27s; --drift: -28px; --r: 6deg;">Credit risk</span>
+          <span style="--x: 12%; --delay: -20s; --duration: 28s; --drift: 18px; --r: 2deg;">Market risk</span>
+          <span style="--x: 62%; --delay: -18s; --duration: 21s; --drift: -24px; --r: -4deg;">OCC remediation</span>
+          <span style="--x: 38%; --delay: -23s; --duration: 24s; --drift: 20px; --r: 5deg;">FRTB</span>
+          <span style="--x: 72%; --delay: -6s; --duration: 29s; --drift: -12px; --r: -7deg;">BCBS-239</span>
+          <span style="--x: 22%; --delay: -16s; --duration: 20s; --drift: 26px; --r: 4deg;">MiFID II</span>
+          <span style="--x: 50%; --delay: -3s; --duration: 26s; --drift: -22px; --r: -2deg;">RAID discipline</span>
+          <span style="--x: 4%; --delay: -10s; --duration: 23s; --drift: 16px; --r: 6deg;">Benefits tracking</span>
+          <span style="--x: 60%; --delay: -21s; --duration: 27s; --drift: -30px; --r: -5deg;">Burn rates</span>
+          <span style="--x: 30%; --delay: -26s; --duration: 22s; --drift: 18px; --r: 3deg;">GCP</span>
+          <span style="--x: 86%; --delay: -12s; --duration: 25s; --drift: -22px; --r: -6deg;">BigQuery</span>
+          <span style="--x: 16%; --delay: -28s; --duration: 30s; --drift: 28px; --r: 6deg;">Kubernetes</span>
+          <span style="--x: 54%; --delay: -8s; --duration: 24s; --drift: -18px; --r: -3deg;">Model evaluation</span>
+          <span style="--x: 78%; --delay: -31s; --duration: 28s; --drift: 14px; --r: 4deg;">AI governance</span>
+          <span style="--x: 6%; --delay: -24s; --duration: 26s; --drift: -16px; --r: -5deg;">Guardrails</span>
+          <span style="--x: 44%; --delay: -14s; --duration: 23s; --drift: 22px; --r: 7deg;">Stakeholder alignment</span>
+          <span style="--x: 66%; --delay: -33s; --duration: 31s; --drift: -26px; --r: -2deg;">SteerCos</span>
+          <span style="--x: 24%; --delay: -19s; --duration: 27s; --drift: 20px; --r: 5deg;">Clarity PPM</span>
+          <span style="--x: 70%; --delay: -29s; --duration: 22s; --drift: -18px; --r: -4deg;">Jira</span>
+          <span style="--x: 10%; --delay: -35s; --duration: 29s; --drift: 24px; --r: 3deg;">BRMS</span>
+          <span style="--x: 48%; --delay: -22s; --duration: 25s; --drift: -14px; --r: -7deg;">Decision automation</span>
+          <span style="--x: 88%; --delay: -17s; --duration: 30s; --drift: 18px; --r: 4deg;">Stress testing</span>
+          <span style="--x: 34%; --delay: -37s; --duration: 28s; --drift: -24px; --r: -5deg;">Counterparty risk</span>
+          <span style="--x: 58%; --delay: -25s; --duration: 32s; --drift: 20px; --r: 6deg;">Roadmaps</span>
+          <span style="--x: 18%; --delay: -32s; --duration: 24s; --drift: -20px; --r: -2deg;">Executive dashboards</span>
+          <span style="--x: 76%; --delay: -39s; --duration: 27s; --drift: 26px; --r: 5deg;">Human-in-loop</span>
+          <span style="--x: 52%; --delay: -41s; --duration: 24s; --drift: 18px; --r: 3deg;">Next.js</span>
+          <span style="--x: 14%; --delay: -44s; --duration: 29s; --drift: -22px; --r: -4deg;">Node.js</span>
+          <span style="--x: 82%; --delay: -42s; --duration: 26s; --drift: 24px; --r: 5deg;">Python</span>
+          <span style="--x: 28%; --delay: -46s; --duration: 31s; --drift: -18px; --r: -2deg;">React</span>
+          <span style="--x: 64%; --delay: -45s; --duration: 23s; --drift: 20px; --r: 6deg;">Vite</span>
+          <span style="--x: 8%; --delay: -48s; --duration: 28s; --drift: -26px; --r: 4deg;">SQL</span>
+          <span style="--x: 72%; --delay: -43s; --duration: 30s; --drift: 16px; --r: -5deg;">Elasticsearch</span>
+          <span style="--x: 36%; --delay: -49s; --duration: 25s; --drift: -20px; --r: 2deg;">CI/CD</span>
+          <span style="--x: 58%; --delay: -47s; --duration: 27s; --drift: 28px; --r: -6deg;">DevOps</span>
+          <span style="--x: 20%; --delay: -51s; --duration: 32s; --drift: -14px; --r: 5deg;">Lightspeed</span>
+          <span style="--x: 88%; --delay: -50s; --duration: 24s; --drift: 22px; --r: -3deg;">Scrum</span>
+          <span style="--x: 46%; --delay: -53s; --duration: 29s; --drift: -24px; --r: 4deg;">UX</span>
+          <span style="--x: 12%; --delay: -52s; --duration: 26s; --drift: 18px; --r: -4deg;">Atlassian</span>
+          <span style="--x: 68%; --delay: -55s; --duration: 33s; --drift: -28px; --r: 6deg;">Jira Cloud migration</span>
+          <span style="--x: 40%; --delay: -30s; --duration: 33s; --drift: -28px; --r: -6deg;">Policy chatbot</span>
+        </div>
+      </section>
+
+      <section class="section split-section" id="capabilities">
+        <div class="section-heading reveal">
+          <p class="eyebrow">What I do</p>
+          <h2>AI delivery leadership with technical depth.</h2>
+          <div class="expertise-visual" id="expertise-visual" aria-live="polite"></div>
+        </div>
+        <div class="capability-list reveal" id="capabilities-list"></div>
+      </section>
+
+      <section class="section work-section" id="work">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Selected work</p>
+          <h2>Selected AI, data, and transformation delivery themes.</h2>
+        </div>
+        <div class="work-controls reveal" aria-label="Project filters" id="work-filters"></div>
+        <div class="project-grid" id="project-grid"></div>
+      </section>
+
+      <section class="section experience-section" id="experience">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Experience</p>
+          <h2>Financial-services delivery at enterprise scale.</h2>
+        </div>
+        <div class="timeline reveal" id="experience-timeline"></div>
+      </section>
+
+      <section class="section about-section" id="about">
+        <div class="portrait-panel reveal">
+          <div class="portrait-frame" aria-hidden="true">
+            <div class="terminal-visual">
+              <div class="terminal-topbar">
+                <span></span><span></span><span></span>
+                <strong>Terminal</strong>
+              </div>
+              <div class="terminal-install">
+                <p><span class="ps-prompt">PS</span> Install-Module AgentOrchestrator</p>
+                <p><span class="spinner"></span> Resolving dependencies</p>
+                <p>Installing: LangChain, RAGKit, EvalHarness</p>
+                <p>Registering autonomous-agent tools</p>
+              </div>
+              <div class="code-window">
+                <div class="code-scroll">
+                  <code>const portfolio = await loadPortfolio("risk-tech");</code>
+                  <code>const agents = farm.spawn(["research", "risk", "delivery"]);</code>
+                  <code>await agents.mapUseCases({ rag: true, controls: true });</code>
+                  <code>dashboard.track(["RAID", "benefits", "burnRate"]);</code>
+                  <code>governance.addGuardrails(modelRiskPolicy);</code>
+                  <code>workflow.routeExceptions({ humanInLoop: true });</code>
+                  <code>brief.generate({ audience: "SteerCo", format: "exec" });</code>
+                  <code>evals.score({ accuracy, traceability, adoption });</code>
+                  <code>roadmap.commit("controlled AI delivery");</code>
+                  <code>const portfolio = await loadPortfolio("risk-tech");</code>
+                  <code>const agents = farm.spawn(["research", "risk", "delivery"]);</code>
+                  <code>await agents.mapUseCases({ rag: true, controls: true });</code>
+                  <code>dashboard.track(["RAID", "benefits", "burnRate"]);</code>
+                  <code>governance.addGuardrails(modelRiskPolicy);</code>
+                  <code>workflow.routeExceptions({ humanInLoop: true });</code>
+                  <code>brief.generate({ audience: "SteerCo", format: "exec" });</code>
+                  <code>evals.score({ accuracy, traceability, adoption });</code>
+                  <code>roadmap.commit("controlled AI delivery");</code>
+                </div>
+              </div>
+            </div>
+            <div class="orbit-line one"></div>
+            <div class="orbit-line two"></div>
+          </div>
+          <div class="availability">
+            <span>Current mode</span>
+            <strong>Portfolio Manager, Finance, Credit and Market Risk Technology</strong>
+          </div>
+        </div>
+        <div class="about-copy reveal">
+          <p class="eyebrow">About</p>
+          <h2>Executive-ready AI delivery through ambiguity.</h2>
+          <p>
+            My work sits where AI delivery, governance, technology strategy, risk
+            controls, analytics, and senior stakeholder alignment meet. I translate
+            complex initiatives into clear use cases, roadmaps, delivery metrics,
+            RAID disciplines, executive dashboards, and practical operating rhythm.
+          </p>
+          <div class="principles" id="principles-list"></div>
+        </div>
+      </section>
+
+      <section class="section process-section" id="process">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Process</p>
+          <h2>From AI opportunity to controlled execution.</h2>
+        </div>
+        <div class="process-rail reveal" id="process-rail"></div>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div class="contact-copy reveal">
+          <p class="eyebrow">Contact</p>
+          <h2>Let’s connect around AI, portfolio, programme, and transformation leadership.</h2>
+          <p>
+            I’m especially interested in AI-enabled operating models, autonomous
+            agents, agent farms, data-driven transformation, risk technology, cloud
+            migration, and portfolio governance roles where delivery clarity matters.
+          </p>
+        </div>
+        <div class="contact-actions reveal">
+          <a class="contact-link" href="mailto:anwar.j.khan@gmail.com" data-tooltip="Open a new email">
+            <span>Email</span>
+            <strong>anwar.j.khan@gmail.com</strong>
+          </a>
+          <a class="contact-link" href="https://www.linkedin.com/in/anwar-j-khan/" target="_blank" rel="noreferrer" data-tooltip="Open LinkedIn in a new tab">
+            <span>LinkedIn</span>
+            <strong>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5.1 8.8h3.6v10.9H5.1V8.8Zm1.8-5.3a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2Zm4.1 5.3h3.4v1.5h.1c.5-.9 1.7-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v5.8h-3.6v-5.1c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7v5.2H11V8.8Z" />
+              </svg>
+              linkedin.com/in/anwar-j-khan
+            </strong>
+          </a>
+          <a class="contact-link" href="https://github.com/anwarjkhan" target="_blank" rel="noreferrer" data-tooltip="Open GitHub in a new tab">
+            <span>GitHub</span>
+            <strong>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.8a9.2 9.2 0 0 0-2.9 17.9c.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.2-3.5-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 0 1.6 1.1 1.6 1.1.9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.7-1.4-2.3-.3-4.7-1.2-4.7-5.1 0-1.1.4-2.1 1.1-2.8-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1a9.9 9.9 0 0 1 5.2 0c2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.7 1.1 1.7 1.1 2.8 0 4-2.4 4.8-4.7 5.1.4.3.8 1 .8 2v3c0 .3.2.6.7.5A9.2 9.2 0 0 0 12 2.8Z" />
+              </svg>
+              github.com/anwarjkhan
+            </strong>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <div class="page-controls" aria-label="Page navigation" id="page-controls"></div>
+
+    <footer class="site-footer">
+      <span>© 2026 Anwar</span>
+      <a href="#top" data-tooltip="Return to opening screen">Back to top</a>
+    </footer>
+
+    <script src="script.js?v=vector-dot-opposite-echo"></script>
+  </body>
+</html>
