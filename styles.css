@@ -263,35 +263,6 @@ button {
   transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
 }
 
-.social-button::before,
-.theme-toggle::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    linear-gradient(
-      115deg,
-      transparent 18%,
-      color-mix(in srgb, var(--accent-2) 18%, transparent) 38%,
-      color-mix(in srgb, var(--accent) 28%, transparent) 50%,
-      transparent 68%
-    );
-  border-radius: inherit;
-  opacity: 0.72;
-  transform: translateX(-112%) rotate(8deg);
-  animation: control-shimmer 3.8s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.social-button:nth-of-type(2)::before {
-  animation-delay: -1.4s;
-}
-
-.theme-toggle::before {
-  animation-delay: -2.2s;
-}
-
 .theme-toggle:hover,
 .audio-toggle:hover {
   transform: translateY(-1px);
@@ -1073,22 +1044,6 @@ h3 {
   }
 }
 
-@keyframes control-shimmer {
-  0%,
-  18% {
-    opacity: 0;
-    transform: translateX(-112%) rotate(8deg);
-  }
-  42% {
-    opacity: 0.74;
-  }
-  70%,
-  100% {
-    opacity: 0;
-    transform: translateX(112%) rotate(8deg);
-  }
-}
-
 @keyframes code-scroll {
   from {
     transform: translateY(0);
@@ -1481,7 +1436,25 @@ body.paged-site .nav-links a.active {
   body.paged-site .about-section,
   body.paged-site .contact-section {
     grid-template-columns: 1fr;
-    align-content: center;
+    align-content: start;
+    align-items: start;
+  }
+
+  body.paged-site .capability-list,
+  body.paged-site .timeline,
+  body.paged-site .principles,
+  body.paged-site .contact-actions {
+    max-height: none;
+    overflow: visible;
+  }
+
+  body.paged-site .work-section {
+    display: grid;
+    align-content: start;
+  }
+
+  body.paged-site .work-section .section-heading {
+    max-width: none;
   }
 
   body.paged-site .hero-panel,
@@ -1495,7 +1468,8 @@ body.paged-site .nav-links a.active {
   }
 
   body.paged-site .project-card {
-    height: clamp(150px, 18vh, 210px);
+    height: auto;
+    min-height: 230px;
   }
 
   .page-controls {
@@ -1523,14 +1497,6 @@ body.paged-site .nav-links a.active {
   body.paged-site .project-grid,
   body.paged-site .process-rail {
     grid-template-columns: 1fr;
-  }
-
-  body.paged-site .project-card:nth-child(n + 5) {
-    display: none;
-  }
-
-  body.paged-site .timeline-item:nth-child(n + 5) {
-    display: none;
   }
 
   body.paged-site .expertise-visual {
