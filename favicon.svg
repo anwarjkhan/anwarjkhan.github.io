@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Anwar Khan portfolio icon">
+  <defs>
+    <linearGradient id="bg" x1="10" y1="6" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#16191e"/>
+      <stop offset="0.58" stop-color="#0b0d10"/>
+      <stop offset="1" stop-color="#153633"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="16" y1="48" x2="50" y2="16" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f4b15d"/>
+      <stop offset="1" stop-color="#6dd6c8"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <path d="M12 44 22 31l11 5 10-17 9 11" fill="none" stroke="#6dd6c8" stroke-opacity=".34" stroke-width="2"/>
+  <path d="M16 48 26 22h12l10 26h-9l-2-6H26l-2 6h-8Zm13-14h6l-3-9-3 9Z" fill="#f5f1ea"/>
+  <g filter="url(#glow)">
+    <circle cx="12" cy="44" r="2.4" fill="url(#accent)"/>
+    <circle cx="22" cy="31" r="2" fill="#6dd6c8"/>
+    <circle cx="43" cy="19" r="2.2" fill="#f4b15d"/>
+    <circle cx="52" cy="30" r="2" fill="#6dd6c8"/>
+  </g>
+</svg>

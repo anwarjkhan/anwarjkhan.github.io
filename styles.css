@@ -633,14 +633,14 @@ h3 {
 
 .signal-window {
   display: grid;
-  grid-template-columns: 0.8fr 1fr;
-  gap: 18px;
   padding: 18px;
 }
 
 .signal-window p {
   margin: 0;
   color: var(--muted);
+  font-size: clamp(0.92rem, 1.15vw, 1.06rem);
+  line-height: 1.55;
 }
 
 .signal-bars {
@@ -687,6 +687,7 @@ h3 {
   position: absolute;
   top: -18%;
   left: var(--x);
+  display: none;
   color: var(--falling-term);
   font-family: "Space Grotesk", Inter, sans-serif;
   font-size: clamp(0.56rem, 0.62vw, 0.78rem);
@@ -698,6 +699,11 @@ h3 {
   opacity: 0;
   animation: term-fall var(--duration) linear infinite;
   animation-delay: var(--delay);
+  animation-fill-mode: backwards;
+}
+
+.falling-terms span.is-falling-active {
+  display: block;
 }
 
 .split-section,
@@ -1242,7 +1248,11 @@ body.paged-site .page-section {
   height: calc(100vh - 116px);
   margin: 0;
   padding: clamp(38px, 5vh, 68px) 0 44px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, 28px) scale(0.985);
@@ -1462,7 +1472,7 @@ body.paged-site .nav-links a.active {
   body.paged-site .page-section {
     width: min(calc(100% - 20px), var(--max));
     height: calc(100vh - 96px);
-    padding-top: 28px;
+    padding: 28px 0 92px;
   }
 
   body.paged-site .hero,
@@ -1496,6 +1506,10 @@ body.paged-site .nav-links a.active {
 @media (max-width: 620px) {
   body.paged-site main {
     height: calc(100vh - 74px);
+  }
+
+  body.paged-site .page-section {
+    padding-bottom: 112px;
   }
 
   body.paged-site h1 {

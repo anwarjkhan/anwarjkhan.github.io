@@ -166,10 +166,8 @@ function storeTheme(theme) {
   }
 }
 
-function preferredTheme() {
-  const storedTheme = getStoredTheme();
-  if (storedTheme === "light" || storedTheme === "dark") return storedTheme;
-  return "dark";
+function startupTheme() {
+  return Math.random() >= 0.5 ? "dark" : "light";
 }
 
 function setTheme(theme) {
@@ -181,7 +179,7 @@ function setTheme(theme) {
 }
 
 function setupThemeToggle() {
-  setTheme(preferredTheme());
+  setTheme(startupTheme());
   themeToggle.addEventListener("click", (event) => {
     event.stopPropagation();
     const nextTheme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
@@ -700,18 +698,41 @@ function setupFallingTerms() {
 
   const terms = Array.from(termRoot.children);
   const randomValue = (min, max) => min + Math.random() * (max - min);
+  const maxActiveTerms = 20;
+  let batchStart = 0;
 
-  terms
-    .sort(() => Math.random() - 0.5)
-    .forEach((term, index) => {
-      term.style.setProperty("--x", `${Math.round(randomValue(2, 90))}%`);
-      term.style.setProperty("--delay", `${-Math.round(randomValue(1, 58))}s`);
+  const shuffledTerms = terms.sort(() => Math.random() - 0.5);
+
+  function placeTerm(term, index) {
+      const rootWidth = termRoot.clientWidth || 340;
+      const termWidth = term.getBoundingClientRect().width || 120;
+      const sidePadding = Math.min(Math.max(termWidth * 0.5 + 12, 34), rootWidth * 0.45);
+      const x = randomValue(sidePadding, Math.max(sidePadding, rootWidth - sidePadding));
+      term.style.setProperty("--x", `${x.toFixed(1)}px`);
+      term.style.setProperty("--delay", `${(index * 0.72 + randomValue(0, 1.8)).toFixed(2)}s`);
       term.style.setProperty("--duration", `${Math.round(randomValue(24, 42))}s`);
-      term.style.setProperty("--drift", `${Math.round(randomValue(-34, 34))}px`);
+      term.style.setProperty("--drift", `${Math.round(randomValue(-18, 18))}px`);
       term.style.setProperty("--r", `${Math.round(randomValue(-7, 7))}deg`);
       termRoot.appendChild(term);
-      term.style.animationDelay = `calc(var(--delay) - ${index * 0.18}s)`;
+      term.style.animationDelay = "var(--delay)";
+  }
+
+  function activateBatch() {
+    shuffledTerms.forEach((term) => {
+      term.classList.remove("is-falling-active");
     });
+
+    for (let index = 0; index < Math.min(maxActiveTerms, shuffledTerms.length); index += 1) {
+      const term = shuffledTerms[(batchStart + index) % shuffledTerms.length];
+      placeTerm(term, index);
+      term.classList.add("is-falling-active");
+    }
+
+    batchStart = (batchStart + maxActiveTerms) % shuffledTerms.length;
+  }
+
+  activateBatch();
+  window.setInterval(activateBatch, 30000);
 }
 
 function setupReveal() {
@@ -909,6 +930,28 @@ function setupCanvas() {
     });
   }
 
+  function getFallingTermFields() {
+    if (document.body.dataset.page !== "1") return [];
+
+    return Array.from(document.querySelectorAll(".falling-terms span"))
+      .map((term) => {
+        const rect = term.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > height || rect.right < 0 || rect.left > width) return null;
+
+        const opacity = Number(getComputedStyle(term).opacity);
+        if (opacity < 0.06) return null;
+
+        return {
+          x: rect.left + rect.width * 0.5,
+          y: rect.top + rect.height * 0.5,
+          rx: Math.max(58, rect.width * 0.72),
+          ry: Math.max(32, rect.height * 2.15),
+          strength: Math.min(0.82, opacity * 1.55),
+        };
+      })
+      .filter(Boolean);
+  }
+
   function draw() {
     frame += 1;
     ctx.clearRect(0, 0, width, height);
@@ -923,6 +966,7 @@ function setupCanvas() {
     pointer.intensity += ((pointer.active ? 1 : 0) - pointer.intensity) * 0.08;
     const pointerSpeed = Math.min(36, Math.hypot(pointer.x - pointer.px, pointer.y - pointer.py));
     const influenceRadius = 190 + pointerSpeed * 2.8;
+    const termFields = getFallingTermFields();
 
     if (pointer.intensity > 0.02) {
       const fieldA = styles.getPropertyValue("--canvas-field-a").trim();
@@ -1004,6 +1048,18 @@ function setupCanvas() {
       node.vy += (dy / pointerDistance) * force * (0.42 + pointerSpeed * 0.015);
       node.vx += (-dy / pointerDistance) * swirl;
       node.vy += (dx / pointerDistance) * swirl;
+
+      termFields.forEach((field) => {
+        const termDx = node.x - field.x;
+        const termDy = node.y - field.y;
+        const normalizedDistance = Math.hypot(termDx / field.rx, termDy / field.ry) || 1;
+        if (normalizedDistance >= 1) return;
+
+        const termForce = (1 - normalizedDistance) * field.strength;
+        node.vx += (termDx / field.rx / normalizedDistance) * termForce * 1.55;
+        node.vy += (termDy / field.ry / normalizedDistance) * termForce * 1.2;
+      });
+
       node.vy += lowerBias * 0.035;
       node.vx += (node.baseVx - node.vx) * 0.016;
       node.vy += (node.baseVy - node.vy) * 0.016;
@@ -1084,6 +1140,7 @@ function setupPagedNavigation() {
   let activeIndex = Math.max(0, pageIds.indexOf(window.location.hash.replace("#", "")));
   let isLocked = false;
   let touchStartY = null;
+  let touchStartScrollTop = 0;
 
   document.documentElement.classList.add("paged-root");
   document.body.classList.add("paged-site");
@@ -1112,6 +1169,7 @@ function setupPagedNavigation() {
       page.classList.toggle("active", isActive);
       page.setAttribute("aria-hidden", String(!isActive));
       if (isActive) {
+        page.scrollTop = 0;
         page.querySelectorAll(".reveal").forEach((element) => element.classList.add("visible"));
       }
     });
@@ -1145,10 +1203,24 @@ function setupPagedNavigation() {
     }, 720);
   }
 
+  function activePage() {
+    return pages[activeIndex];
+  }
+
+  function canScrollActivePage(direction) {
+    const page = activePage();
+    if (!page) return false;
+    const scrollRoom = page.scrollHeight - page.clientHeight;
+    if (scrollRoom <= 2) return false;
+    if (direction > 0) return page.scrollTop < scrollRoom - 2;
+    return page.scrollTop > 2;
+  }
+
   window.addEventListener(
     "wheel",
     (event) => {
       if (Math.abs(event.deltaY) < 18) return;
+      if (canScrollActivePage(event.deltaY > 0 ? 1 : -1)) return;
       event.preventDefault();
       movePage(event.deltaY > 0 ? 1 : -1);
     },
@@ -1178,6 +1250,7 @@ function setupPagedNavigation() {
     "touchstart",
     (event) => {
       touchStartY = event.touches[0]?.clientY ?? null;
+      touchStartScrollTop = activePage()?.scrollTop ?? 0;
     },
     { passive: true },
   );
@@ -1188,8 +1261,11 @@ function setupPagedNavigation() {
       if (touchStartY === null) return;
       const touchEndY = event.changedTouches[0]?.clientY ?? touchStartY;
       const delta = touchStartY - touchEndY;
-      if (Math.abs(delta) > 42) {
-        movePage(delta > 0 ? 1 : -1);
+      const direction = delta > 0 ? 1 : -1;
+      const page = activePage();
+      const scrollMoved = page ? Math.abs(page.scrollTop - touchStartScrollTop) : 0;
+      if (Math.abs(delta) > 42 && scrollMoved < 8 && !canScrollActivePage(direction)) {
+        movePage(direction);
       }
       touchStartY = null;
     },
