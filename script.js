@@ -698,12 +698,10 @@ function setupFallingTerms() {
 
   const terms = Array.from(termRoot.children);
   const randomValue = (min, max) => min + Math.random() * (max - min);
-  const maxActiveTerms = 20;
-  let batchStart = 0;
 
-  const shuffledTerms = terms.sort(() => Math.random() - 0.5);
-
-  function placeTerm(term, index) {
+  terms
+    .sort(() => Math.random() - 0.5)
+    .forEach((term, index) => {
       const rootWidth = termRoot.clientWidth || 340;
       const termWidth = term.getBoundingClientRect().width || 120;
       const sidePadding = Math.min(Math.max(termWidth * 0.5 + 12, 34), rootWidth * 0.45);
@@ -715,24 +713,7 @@ function setupFallingTerms() {
       term.style.setProperty("--r", `${Math.round(randomValue(-7, 7))}deg`);
       termRoot.appendChild(term);
       term.style.animationDelay = "var(--delay)";
-  }
-
-  function activateBatch() {
-    shuffledTerms.forEach((term) => {
-      term.classList.remove("is-falling-active");
     });
-
-    for (let index = 0; index < Math.min(maxActiveTerms, shuffledTerms.length); index += 1) {
-      const term = shuffledTerms[(batchStart + index) % shuffledTerms.length];
-      placeTerm(term, index);
-      term.classList.add("is-falling-active");
-    }
-
-    batchStart = (batchStart + maxActiveTerms) % shuffledTerms.length;
-  }
-
-  activateBatch();
-  window.setInterval(activateBatch, 30000);
 }
 
 function setupReveal() {

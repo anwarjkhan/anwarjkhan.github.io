@@ -658,7 +658,6 @@ h3 {
   position: absolute;
   top: -18%;
   left: var(--x);
-  display: none;
   color: var(--falling-term);
   font-family: "Space Grotesk", Inter, sans-serif;
   font-size: clamp(0.56rem, 0.62vw, 0.78rem);
@@ -671,10 +670,6 @@ h3 {
   animation: term-fall var(--duration) linear infinite;
   animation-delay: var(--delay);
   animation-fill-mode: backwards;
-}
-
-.falling-terms span.is-falling-active {
-  display: block;
 }
 
 .split-section,
