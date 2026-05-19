@@ -35,9 +35,9 @@ const siteData = {
       tags: ["€16m", "11 projects", "Compliance"],
     },
     {
-      title: "Generative AI Credit Policy Chatbot",
+      title: "Generative AI Policy Chatbot",
       category: "AI",
-      text: "Launched a RAG-based chatbot using open-source LLMs to improve interaction with CRM credit policies, documentation, and controlled knowledge retrieval.",
+      text: "Launched a RAG-based chatbot using open-source LLMs to improve interaction with policies, documentation, and controlled knowledge retrieval.",
       tags: ["GenAI", "RAG", "LLMs"],
     },
     {
@@ -88,7 +88,7 @@ const siteData = {
       org: "Citigroup",
       role: "Portfolio Manager, Finance, Credit and Market Risk Technology",
       dates: "Nov 2024 - Present",
-      text: "Directing FMCRT initiatives across Consent Order, OCC remediation, Counterparty Credit Risk, Price Risk & Controls, Stress Testing, FRTB, and AI-ready delivery metrics.",
+      text: "Directing initiatives across Consent Order, OCC remediation, Counterparty Credit Risk, Price Risk & Controls, Stress Testing, and AI-ready delivery metrics. Using Agents to build out strategic automation solutions within COO functions",
     },
     {
       org: "Deutsche Bank",
