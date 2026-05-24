@@ -1363,6 +1363,10 @@ body.paged-site .process-rail {
   gap: 12px;
 }
 
+body.paged-site .process-section {
+  align-content: center;
+}
+
 body.paged-site .process-step {
   min-height: min(250px, 42vh);
 }
@@ -1460,6 +1464,10 @@ body.paged-site .nav-links a.active {
   body.paged-site .project-grid,
   body.paged-site .process-rail {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  body.paged-site .process-section {
+    align-content: start;
   }
 
   body.paged-site .project-card {
