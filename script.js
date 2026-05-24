@@ -767,6 +767,12 @@ function setupCanvas() {
   let swarm = [];
   let pulses = [];
   let pulseEchoes = [];
+  let herdCharge = 0;
+  let herdUnlocked = false;
+  const herdEvent = {
+    state: "idle",
+    startedAt: 0,
+  };
   let frame = 0;
   const seededRandom = (seed) => {
     const value = Math.sin(seed * 12.9898) * 43758.5453;
@@ -788,15 +794,24 @@ function setupCanvas() {
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     swarmCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
     const count = Math.max(112, Math.floor((width * height) / 10500));
-    nodes = Array.from({ length: count }, (_, index) => ({
-      x: seededRandom(index + 1) * width,
-      y: height * 0.66 + seededRandom(index + 101) * Math.max(height * 0.38, 1),
-      vx: (seededRandom(index + 201) - 0.5) * 0.45,
-      vy: (seededRandom(index + 301) - 0.5) * 0.32,
-      baseVx: (seededRandom(index + 201) - 0.5) * 0.45,
-      baseVy: (seededRandom(index + 301) - 0.5) * 0.32,
-      radius: 1.35 + seededRandom(index + 401) * 0.95,
-    }));
+    nodes = Array.from({ length: count }, (_, index) => {
+      const x = seededRandom(index + 1) * width;
+      const y = height * 0.66 + seededRandom(index + 101) * Math.max(height * 0.38, 1);
+      return {
+        x,
+        y,
+        homeX: x,
+        homeY: y,
+        vx: (seededRandom(index + 201) - 0.5) * 0.45,
+        vy: (seededRandom(index + 301) - 0.5) * 0.32,
+        baseVx: (seededRandom(index + 201) - 0.5) * 0.45,
+        baseVy: (seededRandom(index + 301) - 0.5) * 0.32,
+        radius: 1.35 + seededRandom(index + 401) * 0.95,
+        herded: false,
+        reformDelay: seededRandom(index + 501) * 2200,
+        visible: true,
+      };
+    });
     swarm = Array.from({ length: 18 }, (_, index) => ({
       x: pointer.x + Math.cos(index) * 28,
       y: pointer.y + Math.sin(index) * 28,
@@ -821,6 +836,10 @@ function setupCanvas() {
         phase: index,
       };
     });
+    herdCharge = 0;
+    herdUnlocked = false;
+    herdEvent.state = "idle";
+    herdEvent.startedAt = 0;
   }
 
   function findNextPulseNode(fromIndex, previousIndex, salt = 0) {
@@ -933,6 +952,185 @@ function setupCanvas() {
       .filter(Boolean);
   }
 
+  function createPulses() {
+    pulses = Array.from({ length: 8 }, (_, index) => {
+      const from = Math.floor(seededRandom(index + frame + 701) * nodes.length);
+      const to = findNextPulseNode(from, -1, index);
+      return {
+        from,
+        to,
+        previous: -1,
+        progress: seededRandom(index + frame + 801),
+        speed: 0.0038 + seededRandom(index + frame + 901) * 0.0013,
+        flare: 0,
+        phase: index,
+      };
+    });
+  }
+
+  function startHerdEvent() {
+    if (herdUnlocked || herdEvent.state !== "idle") return;
+
+    herdUnlocked = true;
+    herdEvent.state = "pulse";
+    herdEvent.startedAt = performance.now();
+    pulseEchoes = [];
+  }
+
+  function updateHerdEasterEgg() {
+    if (herdUnlocked || herdEvent.state !== "idle" || !nodes.length) return;
+
+    const herdedCount = nodes.reduce((count, node) => count + (node.herded ? 1 : 0), 0);
+    const herdRatio = herdedCount / nodes.length;
+    const targetReached = pointer.active && herdRatio >= 0.88;
+
+    herdCharge += (targetReached ? 1 - herdCharge : -herdCharge) * 0.035;
+    if (herdCharge > 0.72) {
+      startHerdEvent();
+    }
+  }
+
+  function explodeHerdMesh() {
+    const centerX = width * 0.5;
+    const centerY = height * 0.58;
+
+    nodes.forEach((node, index) => {
+      const angle = Math.atan2(node.y - centerY, node.x - centerX) + (seededRandom(index + frame) - 0.5) * 0.9;
+      const speed = 8.5 + seededRandom(index + 1101) * 10;
+      node.vx = Math.cos(angle) * speed;
+      node.vy = Math.sin(angle) * speed - 2.5;
+    });
+    pulses = [];
+    pulseEchoes = [];
+  }
+
+  function prepareHerdReform() {
+    nodes.forEach((node, index) => {
+      node.x = node.homeX + (seededRandom(index + 1201) - 0.5) * width * 0.72;
+      node.y = -80 - seededRandom(index + 1301) * height * 0.75;
+      node.vx = (seededRandom(index + 1401) - 0.5) * 1.8;
+      node.vy = 1.8 + seededRandom(index + 1501) * 3.2;
+      node.herded = false;
+      node.visible = false;
+    });
+  }
+
+  function renderEventMesh(lineColor, dotColor, pulseColor) {
+    const now = performance.now();
+    const elapsed = now - herdEvent.startedAt;
+    let alpha = 1;
+    let radiusBoost = 0;
+    let connectDistance = 138;
+
+    if (herdEvent.state === "pulse") {
+      const pulseIndex = Math.floor(elapsed / 720);
+      const pulseProgress = (elapsed % 720) / 720;
+      const pulseWave = Math.sin(pulseProgress * Math.PI);
+      radiusBoost = pulseWave * 5.6;
+      alpha = 0.56 + pulseWave * 0.44;
+      connectDistance = 150 + pulseWave * 46;
+      ctx.save();
+      ctx.globalAlpha = 0.18 + pulseWave * 0.2;
+      ctx.fillStyle = pulseColor;
+      ctx.shadowColor = pulseColor;
+      ctx.shadowBlur = 42;
+      ctx.beginPath();
+      ctx.arc(width * 0.5, height * 0.68, Math.max(width, height) * (0.18 + pulseIndex * 0.08 + pulseWave * 0.18), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      if (elapsed > 2160) {
+        herdEvent.state = "explode";
+        herdEvent.startedAt = now;
+        explodeHerdMesh();
+      }
+    } else if (herdEvent.state === "explode") {
+      alpha = Math.max(0, 1 - elapsed / 1650);
+      radiusBoost = (1 - alpha) * 5;
+      nodes.forEach((node) => {
+        node.vx *= 0.992;
+        node.vy = node.vy * 0.992 + 0.03;
+        node.x += node.vx;
+        node.y += node.vy;
+      });
+
+      if (elapsed > 1650) {
+        herdEvent.state = "empty";
+        herdEvent.startedAt = now;
+      }
+    } else if (herdEvent.state === "empty") {
+      if (elapsed > 10000) {
+        prepareHerdReform();
+        herdEvent.state = "reform";
+        herdEvent.startedAt = now;
+      } else {
+        return;
+      }
+    } else if (herdEvent.state === "reform") {
+      let settled = 0;
+      nodes.forEach((node) => {
+        const nodeElapsed = elapsed - node.reformDelay;
+        if (nodeElapsed < 0) return;
+
+        node.visible = true;
+        const dx = node.homeX - node.x;
+        const dy = node.homeY - node.y;
+        node.vx += dx * 0.008;
+        node.vy += dy * 0.008 + 0.018;
+        node.vx *= 0.9;
+        node.vy *= 0.9;
+        node.x += node.vx;
+        node.y += node.vy;
+        if (Math.hypot(dx, dy) < 10 && Math.hypot(node.vx, node.vy) < 0.7) settled += 1;
+      });
+      alpha = Math.min(1, elapsed / 2600);
+      radiusBoost = Math.max(0, 3.2 - elapsed / 1200);
+
+      if (elapsed > 7600 || settled > nodes.length * 0.92) {
+        nodes.forEach((node) => {
+          node.x = node.homeX;
+          node.y = node.homeY;
+          node.vx = node.baseVx;
+          node.vy = node.baseVy;
+          node.herded = false;
+          node.visible = true;
+        });
+        herdCharge = 0;
+        herdUnlocked = false;
+        herdEvent.state = "idle";
+        herdEvent.startedAt = 0;
+        createPulses();
+        return;
+      }
+    }
+
+    ctx.fillStyle = dotColor;
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth = 1.35;
+    nodes.forEach((node, index) => {
+      if (node.visible === false) return;
+
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, node.radius + radiusBoost, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (let otherIndex = index + 1; otherIndex < nodes.length; otherIndex += 1) {
+        const other = nodes[otherIndex];
+        if (other.visible === false) continue;
+        const distance = Math.hypot(node.x - other.x, node.y - other.y);
+        if (distance < connectDistance) {
+          ctx.globalAlpha = alpha * Math.min(0.95, Math.max(0.1, 1 - distance / connectDistance));
+          ctx.beginPath();
+          ctx.moveTo(node.x, node.y);
+          ctx.lineTo(other.x, other.y);
+          ctx.stroke();
+        }
+      }
+    });
+    ctx.globalAlpha = 1;
+  }
+
   function draw() {
     frame += 1;
     ctx.clearRect(0, 0, width, height);
@@ -1017,6 +1215,14 @@ function setupCanvas() {
       ctx.strokeStyle = lineColor;
     }
 
+    if (herdEvent.state !== "idle") {
+      renderEventMesh(lineColor, styles.getPropertyValue("--canvas-dot").trim(), pulseColor);
+      pointer.px += (pointer.x - pointer.px) * 0.42;
+      pointer.py += (pointer.y - pointer.py) * 0.42;
+      requestAnimationFrame(draw);
+      return;
+    }
+
     nodes.forEach((node, index) => {
       const dx = node.x - pointer.x;
       const dy = node.y - pointer.y;
@@ -1024,6 +1230,10 @@ function setupCanvas() {
       const force = pointer.active ? Math.max(0, 1 - pointerDistance / influenceRadius) : 0;
       const swirl = Math.sin(frame * 0.018 + index) * force * 0.12;
       const lowerBias = pointer.active ? 0 : Math.max(0, (height * 0.66 - node.y) / Math.max(height * 0.34, 1));
+
+      if (force > 0.24) {
+        node.herded = true;
+      }
 
       node.vx += (dx / pointerDistance) * force * (0.42 + pointerSpeed * 0.015);
       node.vy += (dy / pointerDistance) * force * (0.42 + pointerSpeed * 0.015);
@@ -1078,6 +1288,7 @@ function setupCanvas() {
       }
     });
 
+    updateHerdEasterEgg();
     drawPulses(pulseColor, echoColor, lineColor);
 
     pointer.px += (pointer.x - pointer.px) * 0.42;
