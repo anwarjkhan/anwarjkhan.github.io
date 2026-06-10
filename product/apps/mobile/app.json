@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "JobPilot",
+    "slug": "jobpilot",
+    "version": "0.1.0",
+    "scheme": "jobpilot",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "plugins": ["expo-router"],
+    "extra": {
+      "apiUrl": "https://app.jobpilot.app"
+    }
+  }
+}

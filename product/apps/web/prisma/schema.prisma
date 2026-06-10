@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  name               String?
+  emailVerified      DateTime?
+  image              String?
+  // Unique application-email alias, e.g. u-<slug>@in.jobpilot.app
+  inboundSlug        String    @unique @default(cuid())
+  // Personal access token for the mobile app / API
+  apiToken           String?   @unique
+  stripeCustomerId   String?   @unique
+  subscriptionStatus String    @default("inactive") // inactive | trialing | active | past_due | canceled
+  currentPeriodEnd   DateTime?
+  createdAt          DateTime  @default(now())
+
+  profile     Profile?
+  jobs        Job[]
+  packs       ApplicationPack[]
+  emailEvents EmailEvent[]
+  accounts    Account[]
+  sessions    Session[]
+}
+
+model Profile {
+  userId      String   @id
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cvMarkdown  String   @db.Text
+  // Target titles, industries, location, compensation, search notes, thresholds.
+  preferences Json
+  timezone    String   @default("Europe/London")
+  digestEmail Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+}
+
+model Job {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dedupeKey    String
+  title        String
+  company      String
+  location     String
+  salary       String
+  url          String   @db.Text
+  source       String
+  posted       String
+  summary      String   @db.Text
+  matchScore   Int
+  matchReasons Json
+  status       String   @default("new") // new | viewed | tailored | applied | interview | rejected | archived
+  createdAt    DateTime @default(now())
+
+  packs ApplicationPack[]
+
+  @@unique([userId, dedupeKey])
+  @@index([userId, createdAt])
+}
+
+model ApplicationPack {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobId         String?
+  job           Job?     @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  jobUrl        String   @db.Text
+  jobTitle      String
+  company       String
+  fitAssessment String   @db.Text
+  cvMarkdown    String   @db.Text
+  coverLetter   String   @db.Text
+  workday       Json
+  createdAt     DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model EmailEvent {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fromAddr   String
+  subject    String
+  category   String // rejection | interview_invite | recruiter_outreach | application_receipt | action_required | other_job_related | not_job_related
+  company    String
+  summary    String   @db.Text
+  nextStep   String
+  receivedAt DateTime @default(now())
+
+  @@index([userId, receivedAt])
+}
+
+// --- Auth.js standard models ---
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
