@@ -1,0 +1,70 @@
+# Job search profile — edit this to steer the agents.
+# Pre-filled from your Indeed profile; refine as needed.
+
+name: Anwar Khan
+email: anwar.j.khan@gmail.com
+
+location:
+  base: London, UK
+  country_code: GB
+  willing_to_relocate: true
+  remote_ok: true
+  hybrid_ok: true
+
+target_titles:
+  - Delivery Lead
+  - Programme Manager
+  - Program Manager
+  - Senior Project Manager
+  - Senior Product Manager
+  - Product Manager
+  - Product Owner
+  - Scrum Master / Agile Delivery Manager
+
+target_industries:
+  - Investment banking / capital markets
+  - Financial services / fintech
+  - Regulatory & risk technology
+
+compensation:
+  minimum_salary: "GBP 120,000 / year"
+  contract_day_rate_ok: true
+  minimum_day_rate: "GBP 650 / day"
+
+job_types:
+  - fulltime
+  - contract
+
+# Free-text guidance the search agent reads verbatim — be opinionated here.
+search_notes: |
+  Strong fit: regulatory change (MiFID II, BCBS-239), credit/market risk
+  technology, finance transformation, front-to-back delivery in tier-1 banks.
+  Growing interest in AI/LLM-adjacent delivery and product roles (certified in
+  LangChain, prompt engineering, Claude/ChatGPT APIs).
+  Prefer London-based or hybrid roles. Avoid junior roles, pure hands-on
+  engineering roles, and roles below the salary floor unless exceptional.
+
+# How many jobs to include per digest email, ranked by match score.
+max_jobs_per_digest: 10
+
+# Minimum match score (0-100) for a job to appear in the digest.
+min_match_score: 60
+
+# Send a digest even when no new jobs were found.
+email_when_empty: false
+
+# Claude models. Defaults to the most capable model; change only if you
+# want to trade quality for cost (e.g. claude-sonnet-4-6 for triage).
+models:
+  search: claude-opus-4-8
+  tailor: claude-opus-4-8
+  triage: claude-opus-4-8
+
+# Gmail labels the inbox agent applies (created automatically).
+labels:
+  rejection: "Job Agent/Rejections"
+  interview_invite: "Job Agent/Interviews"
+  recruiter_outreach: "Job Agent/Opportunities"
+  application_receipt: "Job Agent/Receipts"
+  action_required: "Job Agent/Action Required"
+  other_job_related: "Job Agent/Other"

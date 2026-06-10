@@ -1,0 +1,29 @@
+name: Tailor application (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      job_url:
+        description: "URL of the job posting"
+        required: true
+      notes:
+        description: "Optional notes for the agent"
+        required: false
+        default: ""
+
+jobs:
+  tailor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r job-agent/requirements.txt
+      - name: Build application pack
+        working-directory: job-agent/src
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python tailor.py "${{ inputs.job_url }}" --notes "${{ inputs.notes }}"
