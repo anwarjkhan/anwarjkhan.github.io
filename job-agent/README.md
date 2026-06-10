@@ -32,12 +32,17 @@ from the Actions tab with the job URL.
    | Secret | Value |
    |---|---|
    | `ANTHROPIC_API_KEY` | From <https://platform.claude.com> |
-   | `GMAIL_ADDRESS` | `anwar.j.khan@gmail.com` |
+   | `GMAIL_ADDRESS` | Your Gmail address |
    | `GMAIL_APP_PASSWORD` | The 16-character app password |
+   | `PROFILE_YAML` | Your real profile — full YAML matching the structure of `config/profile.yaml` |
+   | `CV_MARKDOWN` | Your full CV in markdown |
 
-3. **Review the config** — `config/profile.yaml` (preferences, salary floor,
-   models, digest size) and `config/cv.md` (replace the seeded version with
-   your full CV — the richer it is, the better the scoring and tailoring).
+3. **Config via secrets** — because this repo is public, the committed
+   `config/profile.yaml` and `config/cv.md` are sanitised placeholders. The
+   real content lives in the `PROFILE_YAML` and `CV_MARKDOWN` secrets, which
+   override the files whenever they are set (multi-line secret values are
+   fine). The richer the CV, the better the scoring and tailoring. To change
+   your preferences later, edit the `PROFILE_YAML` secret — not the file.
 
 4. **Merge to `main`** — GitHub only runs `schedule:` workflows from the
    default branch. Until merged you can still test everything via
@@ -49,15 +54,11 @@ from the Actions tab with the job URL.
 
 ## ⚠️ Privacy note
 
-`anwarjkhan.github.io` is a **public** repository, so `config/cv.md` and
-`config/profile.yaml` are publicly visible (your CV largely is anyway, but the
-salary floor may be something you'd rather keep private). Two options:
-
-- Move this whole `job-agent/` + `.github/workflows/` setup to a **private
-  repo** (recommended), or
-- Keep placeholder files in the repo and put the real content in the
-  repository secrets `PROFILE_YAML` and `CV_MARKDOWN` — when set, they
-  override the files. Add them to the `env:` blocks of all three workflows.
+`anwarjkhan.github.io` is a **public** repository. That's why the committed
+config files are placeholders and the real profile/CV live in the
+`PROFILE_YAML` / `CV_MARKDOWN` secrets (already wired into all three
+workflows). Don't commit personal details into `config/` — anything in this
+repo is public.
 
 Also note: the inbox agent trusts `TAILOR:` emails whose From address matches
 your own. From headers can be spoofed, so the worst case is someone burning a

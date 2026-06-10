@@ -26,4 +26,6 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          PROFILE_YAML: ${{ secrets.PROFILE_YAML }}
+          CV_MARKDOWN: ${{ secrets.CV_MARKDOWN }}
         run: python tailor.py "${{ inputs.job_url }}" --notes "${{ inputs.notes }}"

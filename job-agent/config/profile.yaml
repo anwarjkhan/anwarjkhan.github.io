@@ -1,35 +1,28 @@
-# Job search profile — edit this to steer the agents.
-# Pre-filled from your Indeed profile; refine as needed.
+# PLACEHOLDER — this repo is public, so the real profile is supplied via the
+# PROFILE_YAML repository secret, which overrides this file entirely when set.
+# Keep this file as a template of the expected structure.
 
-name: Anwar Khan
-email: anwar.j.khan@gmail.com
+name: Your Name
+email: you@example.com
 
 location:
-  base: London, UK
+  base: City, Country
   country_code: GB
-  willing_to_relocate: true
+  willing_to_relocate: false
   remote_ok: true
   hybrid_ok: true
 
 target_titles:
-  - Delivery Lead
-  - Programme Manager
-  - Program Manager
-  - Senior Project Manager
-  - Senior Product Manager
-  - Product Manager
-  - Product Owner
-  - Scrum Master / Agile Delivery Manager
+  - Example Title 1
+  - Example Title 2
 
 target_industries:
-  - Investment banking / capital markets
-  - Financial services / fintech
-  - Regulatory & risk technology
+  - Example industry
 
 compensation:
-  minimum_salary: "GBP 120,000 / year"
-  contract_day_rate_ok: true
-  minimum_day_rate: "GBP 650 / day"
+  minimum_salary: "GBP 0 / year"
+  contract_day_rate_ok: false
+  minimum_day_rate: "GBP 0 / day"
 
 job_types:
   - fulltime
@@ -37,12 +30,7 @@ job_types:
 
 # Free-text guidance the search agent reads verbatim — be opinionated here.
 search_notes: |
-  Strong fit: regulatory change (MiFID II, BCBS-239), credit/market risk
-  technology, finance transformation, front-to-back delivery in tier-1 banks.
-  Growing interest in AI/LLM-adjacent delivery and product roles (certified in
-  LangChain, prompt engineering, Claude/ChatGPT APIs).
-  Prefer London-based or hybrid roles. Avoid junior roles, pure hands-on
-  engineering roles, and roles below the salary floor unless exceptional.
+  Describe strong fits, growing interests, and what to avoid.
 
 # How many jobs to include per digest email, ranked by match score.
 max_jobs_per_digest: 10
