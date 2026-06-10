@@ -1,8 +1,14 @@
 import Stripe from "stripe";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+// Lazy so the app can build/boot without Stripe env vars configured yet.
+let client: Stripe | null = null;
 
-export const PRICE_ID = process.env.STRIPE_PRICE_ID!;
+export function getStripe(): Stripe {
+  if (!client) client = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  return client;
+}
+
+export const PRICE_ID = process.env.STRIPE_PRICE_ID ?? "";
 
 const STATUS_MAP: Record<string, string> = {
   active: "active",

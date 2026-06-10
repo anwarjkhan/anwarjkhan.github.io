@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { stripe, PRICE_ID } from "@/lib/stripe";
+import { getStripe, PRICE_ID } from "@/lib/stripe";
 
 const APP_URL = process.env.APP_URL ?? "http://localhost:3000";
 
@@ -14,7 +14,7 @@ export async function POST() {
 
   let customerId = user.stripeCustomerId;
   if (!customerId) {
-    const customer = await stripe.customers.create({
+    const customer = await getStripe().customers.create({
       email: user.email,
       metadata: { userId: user.id },
     });
@@ -25,7 +25,7 @@ export async function POST() {
     });
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     customer: customerId,
     mode: "subscription",
     line_items: [{ price: PRICE_ID, quantity: 1 }],
