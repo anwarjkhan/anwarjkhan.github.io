@@ -1,0 +1,58 @@
+# PLACEHOLDER — this repo is public, so the real profile is supplied via the
+# PROFILE_YAML repository secret, which overrides this file entirely when set.
+# Keep this file as a template of the expected structure.
+
+name: Your Name
+email: you@example.com
+
+location:
+  base: City, Country
+  country_code: GB
+  willing_to_relocate: false
+  remote_ok: true
+  hybrid_ok: true
+
+target_titles:
+  - Example Title 1
+  - Example Title 2
+
+target_industries:
+  - Example industry
+
+compensation:
+  minimum_salary: "GBP 0 / year"
+  contract_day_rate_ok: false
+  minimum_day_rate: "GBP 0 / day"
+
+job_types:
+  - fulltime
+  - contract
+
+# Free-text guidance the search agent reads verbatim — be opinionated here.
+search_notes: |
+  Describe strong fits, growing interests, and what to avoid.
+
+# How many jobs to include per digest email, ranked by match score.
+max_jobs_per_digest: 10
+
+# Minimum match score (0-100) for a job to appear in the digest.
+min_match_score: 60
+
+# Send a digest even when no new jobs were found.
+email_when_empty: false
+
+# Claude models. Defaults to the most capable model; change only if you
+# want to trade quality for cost (e.g. claude-sonnet-4-6 for triage).
+models:
+  search: claude-opus-4-8
+  tailor: claude-opus-4-8
+  triage: claude-opus-4-8
+
+# Gmail labels the inbox agent applies (created automatically).
+labels:
+  rejection: "Job Agent/Rejections"
+  interview_invite: "Job Agent/Interviews"
+  recruiter_outreach: "Job Agent/Opportunities"
+  application_receipt: "Job Agent/Receipts"
+  action_required: "Job Agent/Action Required"
+  other_job_related: "Job Agent/Other"
