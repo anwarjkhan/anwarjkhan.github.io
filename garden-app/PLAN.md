@@ -1,6 +1,6 @@
-# Verdant — Product & Delivery Plan for a Gardener's Companion App
+# Garden Minder — Product & Delivery Plan for a Gardener's Companion App
 
-> Working name: **Verdant** (alternatives: *Plotwise*, *Sowly*, *Bloomkeeper*).
+> Name: **Garden Minder**.
 > A modern, friendly mobile app that knows your garden — every plant, bed and border —
 > and tells you what to do, when to do it, and why, tuned to *your* conditions.
 
